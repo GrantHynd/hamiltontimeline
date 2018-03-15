@@ -1,5 +1,5 @@
-#Hamilton Timeline
+# Hamilton Timeline
 
-####Application Purpose
+#### Application Purpose
 
 A web application to highlight the events of Alexander Hamilton's life.
