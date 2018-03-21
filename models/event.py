@@ -15,6 +15,9 @@ class Event(Base):
         self.description = description
         self.occurred_on = datetime.strptime(occurred_on, '%Y-%m-%d')
 
+    def set_occurred_on(self, occurred_on):
+        self.occurred_on = datetime.strptime(occurred_on, '%Y-%m-%d')
+
     @classmethod
     def find_by_id(cls, id):
         return cls.query.filter_by(id=id).first()

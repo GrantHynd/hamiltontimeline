@@ -29,6 +29,31 @@ class CreateEvent(relay.ClientIDMutation):
         return CreateEvent(event=event)
 
 
+class UpdateEvent(relay.ClientIDMutation):
+    class Input:
+        id = graphene.Int(required=True)
+        title = graphene.String(required=False)
+        description = graphene.String(required=False)
+        occurred_on = graphene.String(required=False)
+
+    event = graphene.Field(Event)
+    status = graphene.Field(graphene.String)
+
+    @classmethod
+    def mutate_and_get_payload(cls, root, info, **event_input):
+        status = None
+        event = EventModel.find_by_id(event_input.get('id'))
+        if event is not None:
+            event.title = event_input.get('title')
+            event.description = event_input.get('description')
+            event.set_occurred_on(event_input.get('occurred_on'))
+            event.save_to_db()
+            status = "ok"
+        else:
+            status = "event with ID {} not found.".format(event_input.get('id'))
+        return UpdateEvent(event=event, status=status)
+
+
 class DeleteEvent(relay.ClientIDMutation):
     class Input:
         id = graphene.Int(required=True)

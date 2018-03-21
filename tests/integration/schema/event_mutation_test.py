@@ -44,6 +44,80 @@ class EventMutationTest(BaseTestCase):
                 }
             }
 
+    def test_update_event(self):
+        with self.app_context():
+            mock_event = EventMutationTest.create_mock_event()
+            self.db_session.add(mock_event)
+            self.db_session.commit()
+
+            mutation = '''
+            mutation updateEvent {
+                updateEvent(input: 
+                {
+                    id: 1
+                    title: "The birth of Alexander (updated)",
+                    description: "A great event (updated)",
+                    occurredOn: "1755-01-11"
+                }) 
+                {
+                    event 
+                    {
+                        title
+                        description
+                        occurredOn
+                    },
+                    status
+                }
+            }
+            '''
+            executed = self.client.execute(mutation)
+
+            assert executed == {
+                "data": {
+                    "updateEvent": {
+                        "event": {
+                            "title": "The birth of Alexander (updated)",
+                            "description": "A great event (updated)",
+                            "occurredOn": "1755-01-11T00:00:00"
+                        },
+                        "status": "ok"
+                    }
+                }
+            }
+
+    def test_update_event_with_invalid_id_returns_error(self):
+        with self.app_context():
+            mutation = '''
+            mutation updateEvent {
+                updateEvent(input: 
+                {
+                    id: 1
+                    title: "The birth of Alexander (updated)",
+                    description: "A great event (updated)",
+                    occurredOn: "1755-01-11"
+                }) 
+                {
+                    event 
+                    {
+                        title
+                        description
+                        occurredOn
+                    },
+                    status
+                }
+            }
+            '''
+            executed = self.client.execute(mutation)
+
+            assert executed == {
+                "data": {
+                    "updateEvent": {
+                        "event": None,
+                        "status": "event with ID 1 not found."
+                    }
+                }
+            }
+
     def test_delete_event(self):
         with self.app_context():
             mock_event = EventMutationTest.create_mock_event()
