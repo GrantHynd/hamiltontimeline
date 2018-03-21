@@ -15,6 +15,14 @@ class Event(Base):
         self.description = description
         self.occurred_on = datetime.strptime(occurred_on, '%Y-%m-%d')
 
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(id=id).first()
+
     def save_to_db(self):
         db_session.add(self)
+        db_session.commit()
+
+    def delete_from_db(self):
+        db_session.delete(self)
         db_session.commit()
