@@ -1,5 +1,6 @@
 from sqlalchemy import *
-from database.db import Base
+from database.db import Base, db_session
+from datetime import datetime
 
 
 class Event(Base):
@@ -7,4 +8,13 @@ class Event(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String)
     description = Column(Text)
-    date = Column(DateTime)
+    occurred_on = Column(DateTime)
+
+    def __init__(self, title, description, occurred_on):
+        self.title = title
+        self.description = description
+        self.occurred_on = datetime.strptime(occurred_on, '%Y-%m-%d')
+
+    def save_to_db(self):
+        db_session.add(self)
+        db_session.commit()
