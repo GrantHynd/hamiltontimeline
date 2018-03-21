@@ -3,13 +3,18 @@ from models.event import Event as EventModel
 
 
 class EventTest(BaseTestCase):
+
+    @staticmethod
+    def create_mock_event():
+        return EventModel(
+            title='Birth of a Legend',
+            description='Alexander Hamilton was born and spent part of his childhood in Charlestown.',
+            occurred_on='1757-01-11')
+
     def test_events_query(self):
         with self.app_context():
-            birth_event = EventModel(
-                title='Birth of a Legend',
-                description='Alexander Hamilton was born and spent part of his childhood in Charlestown.',
-                occurred_on='1757-01-11')
-            self.db_session.add(birth_event)
+            mock_event = EventTest.create_mock_event()
+            self.db_session.add(mock_event)
             self.db_session.commit()
 
             query = '''{ events { 
@@ -42,12 +47,8 @@ class EventTest(BaseTestCase):
 
     def test_create_event(self):
         with self.app_context():
-            birth_event = EventModel(
-                title='Birth of a Legend',
-                description='Alexander Hamilton was born and spent part of his childhood in Charlestown.',
-                occurred_on='1757-01-11'
-            )
-            birth_event.save_to_db()
+            mock_event = EventTest.create_mock_event()
+            mock_event.save_to_db()
             queried_event = EventModel.query.filter(EventModel.title == 'Birth of a Legend').first()
 
             self.assertEqual('Birth of a Legend', queried_event.title)
