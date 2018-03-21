@@ -10,7 +10,7 @@ from sqlalchemy import *
 from unittest import TestCase
 from config import config
 from app import app
-from database.db import engine, db_session, Base
+from database.db import db_init, db_drop, db_session
 from schema import schema
 from graphene.test import Client
 
@@ -24,7 +24,7 @@ class BaseTestCase(TestCase):
 
     def setUp(self):
         with app.app_context():
-            Base.metadata.create_all(bind=engine)
+            db_init()
         self.app = app.test_client
         self.app_context = app.app_context
         self.db_session = db_session
@@ -35,4 +35,4 @@ class BaseTestCase(TestCase):
         # Database is blank
         with app.app_context():
             self.db_session.remove()
-            Base.metadata.drop_all(bind=engine)
+            db_drop()

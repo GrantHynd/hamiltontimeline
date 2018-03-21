@@ -10,3 +10,12 @@ db_session = scoped_session(sessionmaker(autocommit=False,
 
 Base = declarative_base()
 Base.query = db_session.query_property()
+
+
+def db_init():
+    Base.metadata.create_all(bind=engine)
+
+
+def db_drop():
+    Base.metadata.drop_all(bind=engine)
+

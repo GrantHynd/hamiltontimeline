@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_graphql import GraphQLView
 from config import config
-from database.db import engine, db_session, Base
+from database.db import db_init, db_session
 from schema import schema
 
 
@@ -24,10 +24,5 @@ def shutdown_session(exception=None):
 
 
 if __name__ == '__main__':
-
-    if app.config['DEBUG']:
-        @app.before_first_request
-        def create_tables():
-            Base.metadata.create_all(bind=engine)
-
+    db_init()
     app.run(port=5000)
