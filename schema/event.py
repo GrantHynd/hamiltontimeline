@@ -20,13 +20,16 @@ class CreateEvent(relay.ClientIDMutation):
 
     @classmethod
     def mutate_and_get_payload(cls, root, info, **event_input):
-        event = EventModel(
-            title=event_input.get('title'),
-            description=event_input.get('description'),
-            occurred_on=event_input.get('occurred_on')
-        )
-        event.save_to_db()
-        return CreateEvent(event=event)
+        try:
+            event = EventModel(
+                title=event_input.get('title'),
+                description=event_input.get('description'),
+                occurred_on=event_input.get('occurred_on')
+            )
+            event.save_to_db()
+            return CreateEvent(event=event)
+        except ValueError as error:
+            return CreateEvent(error)
 
 
 class UpdateEvent(relay.ClientIDMutation):

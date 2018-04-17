@@ -11,6 +11,13 @@ class Event(Base):
     occurred_on = Column(DateTime)
 
     def __init__(self, title, description, occurred_on):
+        if title == '':
+            raise ValueError("Title must not be blank")
+        if description == '':
+            raise ValueError("Description must not be blank")
+        if occurred_on == '':
+            raise ValueError("occurred_on must not be blank")
+
         self.title = title
         self.description = description
         self.occurred_on = datetime.strptime(occurred_on, '%Y-%m-%d')

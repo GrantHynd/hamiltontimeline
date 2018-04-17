@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Add an event from Hamilton's life to the timeline.">
+    <title>Create Event</title>
+    <link href="/css/global.css" rel="stylesheet">
+    <script src="/js/event.js" defer="defer"></script>
+</head>
+<body>
+    <div id="status-message" style="display: none;"></div>
+
+    <h1>Add event to timeline</h1>
+    <form id="event-form" method="POST" action="/graphql">
+        <div>
+            <label for="title">Title:</label>
+            <input id="title" type="text" name="title"  />
+        </div>
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description"></textarea>
+        </div>
+        <div>
+            <label for="occurred_on">Date: </label>
+            <input id="occurred_on" type="date" name="occurred_on" />
+        </div>
+        <div>
+            <button id="create-event" type="button">Create</button>
+        </div>
+    </form>
+</body>
+</html>
