@@ -34,5 +34,4 @@ def shutdown_session(exception=None):
 
 if __name__ == '__main__':
     db_init()
-    app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
     app.run(port=5000)
